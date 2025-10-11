@@ -1,25 +1,23 @@
 if (-not $ExePath) {
+    Write-Host "@@@@@@    @@@@@@      @@@       @@@@@@@@   @@@@@@   @@@@@@@   @@@  @@@     @@@  @@@@@@@  " -ForegroundColor Cyan
+    Write-Host "@@@@@@@   @@@@@@@      @@@       @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@     @@@  @@@@@@@  " -ForegroundColor Cyan
+    Write-Host "!@@       !@@          @@!       @@!       @@!  @@@  @@!  @@@  @@!@!@@@     @@!    @@!    " -ForegroundColor Cyan
+    Write-Host "!@!       !@!          !@!       !@!       !@!  @!@  !@!  @!@  !@!!@!@!     !@!    !@!    " -ForegroundColor Cyan
+    Write-Host "!!@@!!    !!@@!!       @!!       @!!!:!    @!@!@!@!  @!@!!@!   @!@ !!@!     !!@    @!!    " -ForegroundColor Cyan
+    Write-Host " !!@!!!    !!@!!!      !!!       !!!!!:    !!!@!!!!  !!@!@!    !@!  !!!     !!!    !!!    " -ForegroundColor Cyan
+    Write-Host "     !:!       !:!     !!:       !!:       !!:  !!!  !!: :!!   !!:  !!!     !!:    !!:    " -ForegroundColor Cyan
+    Write-Host "    !:!       !:!       :!:      :!:       :!:  !:!  :!:  !:!  :!:  !:!     :!:    :!:    " -ForegroundColor Cyan
+    Write-Host ":::: ::   :::: ::       :: ::::   :: ::::  ::   :::  ::   :::   ::   ::      ::     ::  "  -ForegroundColor Cyan
+    Write-Host ":: : :    :: : :       : :: : :  : :: ::    :   : :   :   : :  ::    :      :       :"    -ForegroundColor Cyan
+    Write-Host "" -ForegroundColor Cyan
+    Write-Host "https://discord.gg/UET6TdxFUk" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "`n------------------------------------------" -ForegroundColor DarkGray
+    Write-Host "            IMPORT ANALYZER .EXE"
+    Write-Host "------------------------------------------`n" -ForegroundColor DarkGray
+    Write-Output "" 
     $ExePath = Read-Host "Inserisci il percorso completo del file .exe da analizzare"
 }
-
-Write-Host "@@@@@@    @@@@@@      @@@       @@@@@@@@   @@@@@@   @@@@@@@   @@@  @@@     @@@  @@@@@@@  " -ForegroundColor Cyan
-Write-Host "@@@@@@@   @@@@@@@      @@@       @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@     @@@  @@@@@@@  " -ForegroundColor Cyan
-Write-Host "!@@       !@@          @@!       @@!       @@!  @@@  @@!  @@@  @@!@!@@@     @@!    @@!    " -ForegroundColor Cyan
-Write-Host "!@!       !@!          !@!       !@!       !@!  @!@  !@!  @!@  !@!!@!@!     !@!    !@!    " -ForegroundColor Cyan
-Write-Host "!!@@!!    !!@@!!       @!!       @!!!:!    @!@!@!@!  @!@!!@!   @!@ !!@!     !!@    @!!    " -ForegroundColor Cyan
-Write-Host " !!@!!!    !!@!!!      !!!       !!!!!:    !!!@!!!!  !!@!@!    !@!  !!!     !!!    !!!    " -ForegroundColor Cyan
-Write-Host "     !:!       !:!     !!:       !!:       !!:  !!!  !!: :!!   !!:  !!!     !!:    !!:    " -ForegroundColor Cyan
-Write-Host "    !:!       !:!       :!:      :!:       :!:  !:!  :!:  !:!  :!:  !:!     :!:    :!:    " -ForegroundColor Cyan
-Write-Host ":::: ::   :::: ::       :: ::::   :: ::::  ::   :::  ::   :::   ::   ::      ::     ::  "  -ForegroundColor Cyan
-Write-Host ":: : :    :: : :       : :: : :  : :: ::    :   : :   :   : :  ::    :      :       :"    -ForegroundColor Cyan
-Write-Host "" -ForegroundColor Cyan
-Write-Host "https://discord.gg/UET6TdxFUk" -ForegroundColor Cyan
-Write-Host ""
-
-Write-Host "`n------------------------------------------" -ForegroundColor DarkGray
-Write-Host "            IMPORT ANALYZER .EXE"
-Write-Host "------------------------------------------`n" -ForegroundColor DarkGray
-Write-Output "" 
 
 function Get-Imports-Simple {
     param([string]$FilePath)

@@ -72,12 +72,17 @@ function Analyze-Imports {
 }
 
 try {
+    if ([string]::IsNullOrWhiteSpace($ExePath)) {
+        Write-Host " [ERRORE] Il parametro -ExePath non è stato fornito o è vuoto." -ForegroundColor Red
+        return
+    }
     if (-not (Test-Path $ExePath)) {
         Write-Host " [ERRORE] File non trovato: $ExePath" -ForegroundColor Red
         return
     }
 
     Write-Host "`nAnalisi degli import di: $ExePath" -ForegroundColor Yellow
+    Write-Host ""
 
     $imports = Get-Imports-Simple -FilePath $ExePath
 
@@ -93,7 +98,7 @@ try {
         foreach ($bann in $analysis.Bannable) {
             Write-Host "   - $bann" -ForegroundColor Red
         }
-        Write-Host " → Bannare l'utente." -ForegroundColor Red
+        Write-Host " -Bannare l'utente." -ForegroundColor Red
     }
     elseif ($analysis.Suspicious.Count -ge 2) {
         Write-Host "`n -Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow

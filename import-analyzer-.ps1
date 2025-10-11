@@ -1,7 +1,6 @@
-param(
-    [Parameter(Mandatory=$true)]
-    [string]$ExePath
-)
+if (-not $ExePath) {
+    $ExePath = Read-Host "Inserisci il percorso completo del file .exe da analizzare"
+}
 
 Write-Host "@@@@@@    @@@@@@      @@@       @@@@@@@@   @@@@@@   @@@@@@@   @@@  @@@     @@@  @@@@@@@  " -ForegroundColor Cyan
 Write-Host "@@@@@@@   @@@@@@@      @@@       @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@     @@@  @@@@@@@  " -ForegroundColor Cyan

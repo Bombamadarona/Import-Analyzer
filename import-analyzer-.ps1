@@ -78,7 +78,6 @@ try {
     }
 
     Write-Host "`nAnalisi degli import di: $ExePath" -ForegroundColor Yellow
-    Write-Host ""
 
     $imports = Get-Imports-Simple -FilePath $ExePath
 
@@ -94,7 +93,7 @@ try {
         foreach ($bann in $analysis.Bannable) {
             Write-Host "   - $bann" -ForegroundColor Red
         }
-        Write-Host " -Bannare l'utente." -ForegroundColor Red
+        Write-Host " → Bannare l'utente." -ForegroundColor Red
     }
     elseif ($analysis.Suspicious.Count -ge 2) {
         Write-Host "`n -Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow

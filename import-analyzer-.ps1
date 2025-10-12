@@ -100,7 +100,7 @@ try {
         Write-Host "-Bannare l'utente." -ForegroundColor Red
     }
     elseif ($analysis.Suspicious.Count -ge 2) {
-        Write-Host "`n -Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow
+        Write-Host "`-Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor DarkYellow
         }

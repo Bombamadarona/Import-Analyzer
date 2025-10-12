@@ -17,9 +17,9 @@ Questo script è stato realizzato dal server discord SS LEARN IT (https://discor
 ## ▶️ Utilizzo
 
 1. Apri PowerShell (amministratore).
-2. Copia e incolla lo script nel terminale oppure salvalo in un file, ad esempio `import-analyzer.ps1`.
+2. Copia e incolla lo script nel terminale oppure salvalo in un file, ad esempio `import-exe-analyzer.ps1`.
 3. Esegui lo script:
-`.\import-analyzer.ps1`
+`.\import-exe-analyzer.ps1`
 
 Oppure puoi semplicemente eseguire lo script tramite un comando senza scaricare il file:
 

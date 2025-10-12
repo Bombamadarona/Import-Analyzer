@@ -70,11 +70,11 @@ function Analyze-Imports {
 
 try {
     if ([string]::IsNullOrWhiteSpace($ExePath)) {
-        Write-Host " [ERRORE] Il parametro -ExePath non è stato fornito o è vuoto." -ForegroundColor Red
+        Write-Host "[ERRORE] Il parametro -ExePath non è stato fornito o è vuoto." -ForegroundColor Red
         return
     }
     if (-not (Test-Path $ExePath)) {
-        Write-Host " [ERRORE] File non trovato: $ExePath" -ForegroundColor Red
+        Write-Host "[ERRORE] File non trovato: $ExePath" -ForegroundColor Red
         return
     }
 
@@ -84,18 +84,19 @@ try {
     $imports = Get-Imports-Simple -FilePath $ExePath
 
     if ($imports.Count -eq 0) {
-        Write-Host "`n [OK] Nessun import sospetto rilevato." -ForegroundColor Green
+        Write-Host "`[OK] Nessun import sospetto rilevato." -ForegroundColor Green
         return
     }
 
     $analysis = Analyze-Imports -Imports $imports
 
     if ($analysis.Bannable.Count -ge 1) {
-        Write-Host "`n-Il programma contiene import bannabili:" -ForegroundColor Red
+        Write-Host "`-Il programma contiene import bannabili:" -ForegroundColor Red
         Write-Host ""
         foreach ($bann in $analysis.Bannable) {
             Write-Host "   - $bann" -ForegroundColor Red
         }
+        Write-Host ""
         Write-Host "-Bannare l'utente." -ForegroundColor Red
     }
     elseif ($analysis.Suspicious.Count -ge 2) {
@@ -103,14 +104,14 @@ try {
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor DarkYellow
         }
-        Write-Host " -Altamente sospetto, valutare ban o ulteriori indagini." -ForegroundColor DarkYellow
+        Write-Host "-Altamente sospetto, valutare ban o ulteriori indagini." -ForegroundColor DarkYellow
     }
     elseif ($analysis.Suspicious.Count -eq 1) {
         Write-Host "`n -Il programma contiene solo un import sospetto:" -ForegroundColor Yellow
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor Yellow
         }
-        Write-Host " -Non è sufficiente per il ban automatico." -ForegroundColor Yellow
+        Write-Host "-Non è sufficiente per il ban automatico." -ForegroundColor Yellow
     }
     else {
         Write-Host "`n [OK] Nessun import sospetto rilevato." -ForegroundColor Green

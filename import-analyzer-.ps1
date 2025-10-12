@@ -70,7 +70,7 @@ function Analyze-Imports {
 
 try {
     if ([string]::IsNullOrWhiteSpace($ExePath)) {
-        Write-Host "[ERRORE] Il parametro -ExePath non è stato fornito o è vuoto." -ForegroundColor Red
+        Write-Host "[ERRORE] Il parametro -ExePath non è stato fornito o e' vuoto." -ForegroundColor Red
         return
     }
     if (-not (Test-Path $ExePath)) {
@@ -78,13 +78,13 @@ try {
         return
     }
 
-    Write-Host "`nAnalisi degli import di: $ExePath" -ForegroundColor Yellow
+    Write-Host "Analisi degli import di: $ExePath" -ForegroundColor Yellow
     Write-Host ""
 
     $imports = Get-Imports-Simple -FilePath $ExePath
 
     if ($imports.Count -eq 0) {
-        Write-Host "`[OK] Nessun import sospetto rilevato." -ForegroundColor Green
+        Write-Host "`[SAFE] Nessun import sospetto rilevato." -ForegroundColor Green
         return
     }
 
@@ -107,16 +107,16 @@ try {
         Write-Host "-Altamente sospetto, valutare ban o ulteriori indagini." -ForegroundColor DarkYellow
     }
     elseif ($analysis.Suspicious.Count -eq 1) {
-        Write-Host "`n -Il programma contiene solo un import sospetto:" -ForegroundColor Yellow
+        Write-Host "`-Il programma contiene solo un import sospetto:" -ForegroundColor Yellow
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor Yellow
         }
-        Write-Host "-Non è sufficiente per il ban automatico." -ForegroundColor Yellow
+        Write-Host "-Non e' sufficiente per il ban automatico." -ForegroundColor Yellow
     }
     else {
-        Write-Host "`n [OK] Nessun import sospetto rilevato." -ForegroundColor Green
+        Write-Host "`[SAFE] Nessun import sospetto rilevato." -ForegroundColor Green
     }
 }
 catch {
-    Write-Host "`n [ERRORE] Si è verificato un errore imprevisto: $_" -ForegroundColor Red
+    Write-Host "`[ERRORE] Si è verificato un errore imprevisto: $_" -ForegroundColor Red
 }

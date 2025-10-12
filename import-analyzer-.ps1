@@ -44,7 +44,7 @@ function Analyze-Imports {
 
     $bannableImports = @(
         "mouse_event",
-        "WriteProcessMemory"
+        "Mouse_Event"
     )
 
     $foundSuspicious = @()
@@ -101,6 +101,7 @@ try {
     }
     elseif ($analysis.Suspicious.Count -ge 2) {
         Write-Host "`-Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow
+        Write-Host ""
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor DarkYellow
         }
@@ -108,6 +109,7 @@ try {
     }
     elseif ($analysis.Suspicious.Count -eq 1) {
         Write-Host "`-Il programma contiene solo un import sospetto:" -ForegroundColor Yellow
+        Write-Host ""
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor Yellow
         }

@@ -91,7 +91,7 @@ try {
     $analysis = Analyze-Imports -Imports $imports
 
     if ($analysis.Bannable.Count -ge 1) {
-        Write-Host "`-Il programma contiene import bannabili:" -ForegroundColor Red
+        Write-Host "`[SOSPETTO] Il programma contiene import bannabili:" -ForegroundColor Red
         Write-Host ""
         foreach ($bann in $analysis.Bannable) {
             Write-Host "   - $bann" -ForegroundColor Red
@@ -100,15 +100,15 @@ try {
         Write-Host "-Bannare l'utente." -ForegroundColor Red
     }
     elseif ($analysis.Suspicious.Count -ge 2) {
-        Write-Host "`-Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow
+        Write-Host "`[SOSPETTO] Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow
         Write-Host ""
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor DarkYellow
         }
-        Write-Host "-Altamente sospetto, valutare ban o ulteriori indagini." -ForegroundColor DarkYellow
+        Write-Host "[SOSPETTO] Altamente sospetto, valutare ban o ulteriori indagini." -ForegroundColor DarkYellow
     }
     elseif ($analysis.Suspicious.Count -eq 1) {
-        Write-Host "`-Il programma contiene solo un import sospetto:" -ForegroundColor Yellow
+        Write-Host "`[SOSPETTO] Il programma contiene solo un import sospetto:" -ForegroundColor Yellow
         Write-Host ""
         foreach ($susp in $analysis.Suspicious) {
             Write-Host "   - $susp" -ForegroundColor Yellow

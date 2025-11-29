@@ -6,9 +6,9 @@ Questo script è stato realizzato dal server discord SS LEARN IT (https://discor
 ## 🔍 Funzionalità
 
 - Analisi Import.
-- Import Bannabili se trova funzioni come mouse_event o WriteProcessMemory, segnala che il programma può essere bannato.
-- Import Sospetti se trova due o più tra SendMessage, GetKeyState, GetAsyncKeyState, il programma è considerato sospetto.
-- Riporta i risultati direttamente sul powershell
+- Import Bannabili se trova funzioni come `mouse_event` o `WriteProcessMemory`, segnala che il programma può essere bannato.
+- Import Sospetti se trova due o più tra SendMessage, GetKeyState, ecc, il programma è considerato sospetto.
+- Riporta i risultati direttamente su una tabella nel powershell
 
 ## 📂 Programmi analizzati
 

@@ -1,8 +1,10 @@
+$ExePath = $null
+
 if (-not $ExePath) {
     Write-Host "@@@@@@    @@@@@@      @@@       @@@@@@@@   @@@@@@   @@@@@@@   @@@  @@@     @@@  @@@@@@@  " -ForegroundColor Cyan
     Write-Host "@@@@@@@   @@@@@@@      @@@       @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@     @@@  @@@@@@@  " -ForegroundColor Cyan
     Write-Host "!@@       !@@          @@!       @@!       @@!  @@@  @@!  @@@  @@!@!@@@     @@!    @@!    " -ForegroundColor Cyan
-    Write-Host "!@!       !@!          !@!       !@!       !@!  @!@  !@!  @!@  !@!!@!@!     !@!    !@!    " -ForegroundColor Cyan
+    Write-Host "!@!       !@!          !@!       !@!       !@!  @!@  !@!  !@!  !@!!@!@!     !@!    !@!    " -ForegroundColor Cyan
     Write-Host "!!@@!!    !!@@!!       @!!       @!!!:!    @!@!@!@!  @!@!!@!   @!@ !!@!     !!@    @!!    " -ForegroundColor Cyan
     Write-Host " !!@!!!    !!@!!!      !!!       !!!!!:    !!!@!!!!  !!@!@!    !@!  !!!     !!!    !!!    " -ForegroundColor Cyan
     Write-Host "     !:!       !:!     !!:       !!:       !!:  !!!  !!: :!!   !!:  !!!     !!:    !!:    " -ForegroundColor Cyan
@@ -12,11 +14,14 @@ if (-not $ExePath) {
     Write-Host "" -ForegroundColor Cyan
     Write-Host "https://discord.gg/UET6TdxFUk" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "`n------------------------------------------" -ForegroundColor DarkGray
-    Write-Host "            IMPORT ANALYZER .EXE"
-    Write-Host "------------------------------------------`n" -ForegroundColor DarkGray
-    Write-Output "" 
-    $ExePath = Read-Host "Inserisci il percorso completo del file .exe da analizzare"
+    Write-Host "============================================================" -ForegroundColor Cyan
+    Write-Host "|                   IMPORT ANALYZER .EXE                   |" -ForegroundColor Cyan
+    Write-Host "============================================================" -ForegroundColor Cyan
+    Write-Host ""
+
+    
+   $ExePath = Read-Host -Prompt "[PATH] Inserire la path del file .exe"
+
 }
 
 function Get-Imports-Simple {
@@ -35,36 +40,17 @@ function Get-Imports-Simple {
 
 function Analyze-Imports {
     param([string[]]$Imports)
-
-    $suspiciousImports = @(
-        "SendMessage",
-        "GetKeyState",
-        "GetAsyncKeyState"
-    )
-
-    $bannableImports = @(
-        "mouse_event",
-        "Mouse_Event"
-    )
-
+    $suspiciousImports = @("SendMessage", "GetKeyState", "GetAsyncKeyState")
+    $bannableImports = @("mouse_event", "Mouse_Event")
     $foundSuspicious = @()
     $foundBannable = @()
-
     foreach ($import in $Imports) {
-        if ($suspiciousImports -contains $import) {
-            $foundSuspicious += $import
-        }
-        if ($bannableImports -contains $import) {
-            $foundBannable += $import
-        }
+        if ($suspiciousImports -contains $import) { $foundSuspicious += $import }
+        if ($bannableImports -contains $import) { $foundBannable += $import }
     }
-
-    $foundSuspicious = $foundSuspicious | Select-Object -Unique
-    $foundBannable = $foundBannable | Select-Object -Unique
-
     return @{
-        Suspicious = $foundSuspicious
-        Bannable   = $foundBannable
+        Suspicious = $foundSuspicious | Select-Object -Unique
+        Bannable   = $foundBannable | Select-Object -Unique
     }
 }
 
@@ -82,43 +68,39 @@ try {
     Write-Host ""
 
     $imports = Get-Imports-Simple -FilePath $ExePath
-
     if ($imports.Count -eq 0) {
-        Write-Host "`[SAFE] Nessun import sospetto rilevato." -ForegroundColor Green
+        Write-Host "[SAFE] Nessun import sospetto rilevato" -ForegroundColor Green
         return
     }
 
     $analysis = Analyze-Imports -Imports $imports
 
-    if ($analysis.Bannable.Count -ge 1) {
-        Write-Host "`[SOSPETTO] Il programma contiene import bannabili:" -ForegroundColor Red
-        Write-Host ""
-        foreach ($bann in $analysis.Bannable) {
-            Write-Host "   - $bann" -ForegroundColor Red
-        }
-        Write-Host ""
-        Write-Host "-Bannare l'utente." -ForegroundColor Red
+    $results = @()
+    foreach ($imp in $analysis.Bannable) {
+        $results += [PSCustomObject]@{Import=$imp; Stato="Bannabile"; Info="BAN"; Colore="Red"}
     }
-    elseif ($analysis.Suspicious.Count -ge 2) {
-        Write-Host "`[SOSPETTO] Il programma contiene più di un import sospetto:" -ForegroundColor DarkYellow
-        Write-Host ""
-        foreach ($susp in $analysis.Suspicious) {
-            Write-Host "   - $susp" -ForegroundColor DarkYellow
-        }
-        Write-Host "[SOSPETTO] Altamente sospetto, valutare ban o ulteriori indagini." -ForegroundColor DarkYellow
+    foreach ($imp in $analysis.Suspicious) {
+        $results += [PSCustomObject]@{Import=$imp; Stato="Sospetto"; Info="Controllo"; Colore="Yellow"}
     }
-    elseif ($analysis.Suspicious.Count -eq 1) {
-        Write-Host "`[SOSPETTO] Il programma contiene solo un import sospetto:" -ForegroundColor Yellow
-        Write-Host ""
-        foreach ($susp in $analysis.Suspicious) {
-            Write-Host "   - $susp" -ForegroundColor Yellow
-        }
-        Write-Host "-Non e' sufficiente per il ban automatico." -ForegroundColor Yellow
+    $safeImports = $imports | Where-Object { ($_ -notin $analysis.Bannable) -and ($_ -notin $analysis.Suspicious) }
+    foreach ($imp in $safeImports) {
+        $results += [PSCustomObject]@{Import=$imp; Stato="Safe"; Info="-"; Colore="Green"}
     }
-    else {
-        Write-Host "`[SAFE] Nessun import sospetto rilevato." -ForegroundColor Green
+
+    $border = "+" + ("-"*58) + "+"
+    Write-Host $border -ForegroundColor DarkGray
+    Write-Host ("| {0,-25} | {1,-12} | {2,-13} |" -f "IMPORT", "STATO", "INFO") -ForegroundColor Cyan
+    Write-Host $border -ForegroundColor DarkGray
+
+    foreach ($r in $results) {
+        Write-Host ("| {0,-25} | {1,-12} | {2,-13} |" -f $r.Import, $r.Stato, $r.Info) -ForegroundColor $r.Colore
     }
+} catch {
+    Write-Host "[ERRORE] Si è verificato un errore imprevisto: $_" -ForegroundColor Red
 }
-catch {
-    Write-Host "`[ERRORE] Si è verificato un errore imprevisto: $_" -ForegroundColor Red
-}
+
+Write-Host ""
+Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
+Write-Host "|                    ANALISI COMPLETATA                    |" -ForegroundColor Cyan
+Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
+Write-Host ""
